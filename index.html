@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Gundam Store - Command Center</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Roboto', sans-serif; background: radial-gradient(circle at center, #1b2735 0%, #090a0f 100%); color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; overflow: hidden; }
+        h1 { font-family: 'Orbitron', sans-serif; color: #f39c12; letter-spacing: 4px; text-transform: uppercase; font-size: 36px; text-shadow: 0 0 10px rgba(243, 156, 18, 0.5); margin-bottom: 5px; }
+        p { font-size: 16px; color: #7f8c8d; margin-bottom: 40px; letter-spacing: 2px; text-transform: uppercase; }
+        .menu-container { display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; max-width: 1000px;}
+        
+        /* Chú ý: Ẩn tất cả các nút đi, JavaScript sẽ hiện chúng lên sau */
+        .menu-card { display: none; font-family: 'Orbitron', sans-serif; background: rgba(255, 255, 255, 0.03); color: #fff; padding: 40px 30px; border-radius: 8px; text-align: center; text-decoration: none; width: 220px; font-size: 18px; font-weight: 700; letter-spacing: 1px; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px); transition: all 0.4s ease; position: relative; }
+        .menu-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px; transition: all 0.4s ease; }
+        .menu-card:hover { transform: translateY(-5px); background: rgba(255, 255, 255, 0.08); }
+        
+        
+        .card-hr { border-bottom: 3px solid #d35400; } .card-hr:hover { border-color: #d35400; box-shadow: 0 10px 30px rgba(211, 84, 0, 0.2);} .card-hr:hover::before { background: #d35400; box-shadow: 0 0 15px #d35400; }
+        .card-kho { border-bottom: 3px solid #00d2ff; } .card-kho:hover { border-color: #00d2ff; box-shadow: 0 10px 30px rgba(0, 210, 255, 0.2);} .card-kho:hover::before { background: #00d2ff; box-shadow: 0 0 15px #00d2ff; }
+        .card-ban { border-bottom: 3px solid #ff003c; } .card-ban:hover { border-color: #ff003c; box-shadow: 0 10px 30px rgba(255, 0, 60, 0.2);} .card-ban:hover::before { background: #ff003c; box-shadow: 0 0 15px #ff003c; }
+        .card-thongke { border-bottom: 3px solid #b71540; } .card-thongke:hover { border-color: #b71540; box-shadow: 0 10px 30px rgba(183, 21, 64, 0.2);} .card-thongke:hover::before { background: #b71540; box-shadow: 0 0 15px #b71540; }
+        .card-crm { border-bottom: 3px solid #8e44ad; } .card-crm:hover { border-color: #8e44ad; box-shadow: 0 10px 30px rgba(142, 68, 173, 0.2);} .card-crm:hover::before { background: #8e44ad; box-shadow: 0 0 15px #8e44ad; }
+        .card-voucher { border-bottom: 3px solid #e67e22; } .card-voucher:hover { border-color: #e67e22; box-shadow: 0 10px 30px rgba(230, 126, 34, 0.2);} .card-voucher:hover::before { background: #e67e22; box-shadow: 0 0 15px #e67e22; }
+       /* Khung User Profile phong cách viễn tưởng */
+.user-profile { 
+    background: rgba(15, 20, 30, 0.7);
+    border: 1px solid rgba(243, 156, 18, 0.4);
+    padding: 15px 25px;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(243, 156, 18, 0.15);
+    backdrop-filter: blur(10px);
+    display: flex; align-items: center; gap: 15px;
+    transition: all 0.3s ease;
+}
+.user-profile:hover {
+    box-shadow: 0 0 35px rgba(243, 156, 18, 0.4);
+    border-color: #f39c12;
+    transform: scale(1.02);
+}
+.user-avatar {
+    font-size: 32px;
+    background: rgba(255, 255, 255, 0.05);
+    width: 55px; height: 55px;
+    display: flex; justify-content: center; align-items: center;
+    border-radius: 50%;
+    border: 2px solid #00d2ff;
+    box-shadow: 0 0 15px rgba(0, 210, 255, 0.4);
+}
+.user-text { text-align: left; }
+.btn-logout { 
+    background: linear-gradient(90deg, #e74c3c, #c0392b); 
+    color: white; padding: 6px 15px; text-decoration: none; 
+    border-radius: 4px; font-size: 11px; font-weight: bold; 
+    margin-top: 8px; display: inline-block;
+    box-shadow: 0 4px 10px rgba(231, 76, 60, 0.4);
+    text-transform: uppercase; letter-spacing: 1px;
+    transition: 0.3s;
+}
+.btn-logout:hover { 
+    background: linear-gradient(90deg, #c0392b, #e74c3c); 
+    box-shadow: 0 0 20px rgba(231, 76, 60, 0.8); 
+}
+    </style>
+</head>
+<body>
+    <div id="userBox" style="display: none; position: absolute; top: 25px; right: 35px; z-index: 100;">
+        <div class="user-profile">
+            <div class="user-avatar">👨‍🚀</div>
+            <div class="user-text">
+                <div style="font-size: 11px; color: #bdc3c7; text-transform: uppercase; letter-spacing: 2px;">Thẻ Định Danh</div>
+                <div id="txtHoTen" style="font-size: 18px; font-weight: 900; color: #f39c12; letter-spacing: 1px; margin: 3px 0;"></div>
+                <div id="txtVaiTro" style="font-size: 12px; color: #00d2ff; font-weight: bold; margin-bottom: 5px;"></div>
+                <a href="dang-xuat" class="btn-logout">Khóa Hệ Thống 🔒</a>
+            </div>
+        </div>
+    </div>
+
+    <h1>GUNDAM STORE SYSTEM</h1>
+    <p>Main Command Center - Select Module</p>
+   
+    <div class="menu-container">
+        <a href="kho-hang" id="btnKho" class="menu-card card-kho">
+            <div style="font-size: 40px; margin-bottom: 15px;">📦</div>
+            <span style="color: #00d2ff;">[ INVENTORY ]</span><br>
+            <div style="font-family: 'Roboto'; font-size: 13px; color: #aaa; margin-top: 10px; font-weight: 400; text-transform: none;">Quản Lý Kho Hàng</div>
+        </a>
+        
+        <a href="ban-hang" id="btnBan" class="menu-card card-ban">
+            <div style="font-size: 40px; margin-bottom: 15px;">🎯</div>
+            <span style="color: #ff003c;">[ POS SYSTEM ]</span><br>
+            <div style="font-family: 'Roboto'; font-size: 13px; color: #aaa; margin-top: 10px; font-weight: 400; text-transform: none;">Giao Diện Bán Hàng</div>
+        </a>
+
+        <a href="thong-ke" id="btnThongKe" class="menu-card card-thongke">
+            <div style="font-size: 40px; margin-bottom: 15px;">📊</div>
+            <span style="color: #b71540;">[ REPORTS ]</span><br>
+            <div style="font-family: 'Roboto'; font-size: 13px; color: #aaa; margin-top: 10px; font-weight: 400; text-transform: none;">Thống Kê Doanh Thu</div>
+        </a>
+
+        <a href="khach-hang" id="btnCRM" class="menu-card card-crm">
+            <div style="font-size: 40px; margin-bottom: 15px;">👥</div>
+            <span style="color: #8e44ad;">[ CRM SYSTEM ]</span><br>
+            <div style="font-family: 'Roboto'; font-size: 13px; color: #aaa; margin-top: 10px; font-weight: 400; text-transform: none;">Hồ Sơ Khách Hàng</div>
+        </a>
+        
+        <a href="voucher" id="btnVoucher" class="menu-card card-voucher">
+            <div style="font-size: 40px; margin-bottom: 15px;">🎟️</div>
+            <span style="color: #e67e22;">[ VOUCHERS ]</span><br>
+            <div style="font-family: 'Roboto'; font-size: 13px; color: #aaa; margin-top: 10px; font-weight: 400; text-transform: none;">Quản Lý Khuyến Mãi</div>
+        </a>
+        
+        <a href="tai-khoan" id="btnTaiKhoan" class="menu-card card-hr">
+            <div style="font-size: 40px; margin-bottom: 15px;">👑</div>
+            <span style="color: #d35400;">[ HR SYSTEM ]</span><br>
+            <div style="font-family: 'Roboto'; font-size: 13px; color: #aaa; margin-top: 10px; font-weight: 400; text-transform: none;">Quản Trị Nhân Sự</div>
+        </a>
+    </div>
+
+    <script>
+        // Tạm thời che toàn bộ trang web lại để chống nhìn trộm
+        document.body.style.visibility = 'hidden';
+
+        fetch('api/user-info')
+            .then(response => {
+                if (!response.ok) throw new Error("API Servlet chưa hoạt động!");
+                return response.json();
+            })
+            .then(data => {
+                if (data.status === 'error') {
+                    // Chưa đăng nhập -> Đá văng ra login lập tức
+                    window.location.href = 'dang-nhap';
+                } else {
+                    // Đăng nhập hợp lệ -> Hiển thị toàn bộ trang web lên
+                    document.body.style.visibility = 'visible';
+                    
+                    // Điền thông tin User
+                    document.getElementById('userBox').style.display = 'block';
+                    document.getElementById('txtHoTen').innerText = data.hoTen;
+                    document.getElementById('txtVaiTro').innerText = '[ Role: ' + data.vaiTro + ' ]';
+
+                    // Bật các nút dựa theo Vai trò
+                    let role = data.vaiTro;
+                    if (role === 'Admin' || role === 'KiemKho') {
+                        document.getElementById('btnKho').style.display = 'block';
+                    }
+                    if (role === 'Admin' || role === 'ThuNgan') {
+                        document.getElementById('btnBan').style.display = 'block';
+                    }
+                    if (role === 'Admin' || role === 'KeToan') {
+                        document.getElementById('btnThongKe').style.display = 'block';
+                    }
+                    if (role === 'Admin' || role === 'KeToan' || role === 'ThuNgan') {
+                        document.getElementById('btnCRM').style.display = 'block';
+                    }
+                    if (role === 'Admin' || role === 'KeToan') {
+                        document.getElementById('btnVoucher').style.display = 'block';
+                    }
+                    // (Thêm khối lệnh này để chỉ có Admin mới được bật nút HR)
+                    if (role === 'Admin') {
+                        document.getElementById('btnTaiKhoan').style.display = 'block';
+                    }
+                }
+            })
+            .catch(error => {
+                // HỄ CÓ BẤT KỲ LỖI GÌ (Mất mạng, sập Server, chưa code Servlet...) 
+                // -> Đá thẳng ra trang đăng nhập để bảo vệ an toàn!
+                console.log('Lỗi bảo mật:', error);
+                window.location.href = 'dang-nhap';
+            });
+    </script>
+</body>
+</html>
